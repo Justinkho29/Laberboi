@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #2a0845 0%, #6441A5 100%);
+            overflow: hidden; /* Keeps the runaway button inside the screen */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Floating Hearts Background Effect */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -10vh;
+            color: rgba(255, 105, 180, 0.4);
+            font-size: 24px;
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-weight: 800;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Button Styling */
+        .btn {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff0844 0%, #ffb199 100%);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 8, 68, 0.5);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 8, 68, 0.8);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative; /* Needed for dodging */
+        }
+
+        /* Form Styling for Page 2 */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #ffd1dc;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input:focus, textarea:focus {
+            border-color: #ffb199;
+            box-shadow: 0 0 10px rgba(255, 177, 153, 0.5);
+        }
+
+        /* Fade Animation for Page Transition */
+        .fade-in {
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #page2 {
+            display: none; /* Hidden by default */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg" id="heart-bg"></div>
+
+    <div class="glass-card" id="page1">
+        <h1>Do you love me? 🥺</h1>
+        <div>
+            <button class="btn btn-yes" onclick="goToPage2()">Yes! ❤️</button>
+            <button class="btn btn-no" id="no-btn" onmouseover="dodgeButton()" ontouchstart="dodgeButton()">No 💔</button>
+        </div>
+    </div>
+
+    <div class="glass-card" id="page2">
+        <h1>I knew it! 🥰</h1>
+        <p style="font-size: 14px; color: #ffd1dc; margin-bottom: 25px;">Now, please fill out this very official survey.</p>
+        
+        <div class="form-group">
+            <label>1. What is your favorite thing about me?</label>
+            <input type="text" placeholder="Be honest...">
+        </div>
+
+        <div class="form-group">
+            <label>2. What should we do for our next date?</label>
+            <input type="text" placeholder="Movie? Dinner? Stargazing?">
+        </div>
+
+        <div class="form-group">
+            <label>3. How much do you love me? (1-100)</label>
+            <input type="number" placeholder="Hint: 100">
+        </div>
+
+        <button class="btn btn-yes" style="width: 100%; margin: 10px 0 0 0;" onclick="alert('Survey Submitted! I love you too! 💕')">Submit Answers 💌</button>
+    </div>
+
+    <script>
+        // Effect 1: Generate Floating Background Hearts
+        const heartBg = document.getElementById('heart-bg');
+        const heartSymbols = ['❤️', '💖', '✨', '💕'];
+        
+        for (let i = 0; i < 20; i++) {
+            let heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Random speed 5-10s
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px'; // Random size
+            heartBg.appendChild(heart);
+        }
+
+        // Effect 2: The Dodging "No" Button
+        function dodgeButton() {
+            const btn = document.getElementById('no-btn');
+            const card = document.getElementById('page1');
+            
+            // Get screen boundaries so it doesn't disappear off-screen
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            // Take it out of the normal flow so it can float anywhere
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        // Effect 3: Transition to Next Page
+        function goToPage2() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+
+            // Hide page 1
+            page1.style.display = 'none';
+            
+            // Show page 2 and trigger fade-in animation
+            page2.style.display = 'block';
+            page2.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
+
